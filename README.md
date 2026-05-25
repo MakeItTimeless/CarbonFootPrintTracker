@@ -1,10 +1,10 @@
-# Carbon Footprint Tracker 🌍
+# Carbon Footprint Tracker 
 
 A robust web application designed to help individuals estimate, monitor, and analyze their daily carbon emissions. By tracking activities across transportation, home energy consumption, and dietary habits, the application provides users with actionable insights to reduce their environmental impact and adopt sustainable living habits.
 
 ---
 
-## 📸 Screenshots & Demo
+## Screenshots & Demo
 
 Here is a visual overview of the application in action. 
 <img width="1919" height="972" alt="image" src="https://github.com/user-attachments/assets/743d7f58-90a4-4864-aac0-98718437e37b" />
@@ -27,7 +27,7 @@ Sample backend response displaying calculated carbon metrics and structured data
 
 ---
 
-## 🚀 Features
+## Features
 
 * **Emission Calculators:** Calculate carbon footprints instantly based on daily commutes (vehicle type, distance), home utility usage (electricity, gas, water), and dietary choices.
 * **Personalized Analytics:** Track your emission trends over time with categorized data breakdowns.
@@ -36,7 +36,7 @@ Sample backend response displaying calculated carbon metrics and structured data
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Backend Framework:** Java, Spring Boot (REST APIs / Microservices Architecture)
 * **Build Tool:** Apache Maven
@@ -58,4 +58,43 @@ Follow these steps to set up and run the project locally on your machine using C
 Open your Command Prompt and execute:
 ```cmd
 git clone [https://github.com/MakeItTimeless/CarbonFootPrintTracker.git](https://github.com/MakeItTimeless/CarbonFootPrintTracker.git)
-cd CarbonFootPrintTracker
+cd CarbonFootPrintTracker 
+```
+### 2. Configure the Database
+Open your PostgreSQL administration tool (like pgAdmin or psql shell).
+
+Create a brand new database named carbon_tracker.
+
+Open your project configuration file located at src/main/resources/application.properties and update it with your database credentials:
+```cmd
+spring.datasource.url=jdbc:postgresql://localhost:5432/carbon_tracker
+spring.datasource.username=YOUR_POSTGRES_USERNAME
+spring.datasource.password=YOUR_POSTGRES_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+### 3. Build and Run the Application
+In your Command Prompt, run the following commands sequentially to clean previous builds, install required Maven dependencies, and start the Spring Boot application:
+
+```cmd
+DOS
+:: Clean target directories and install project dependencies
+mvn clean install
+
+:: Run the Spring Boot application server
+mvn spring-boot:run
+```
+
+### Project Structure Overview
+```cmd
+src/
+└── main/
+    ├── java/com/project/carbontracker/
+    │   ├── controller/   # REST API Endpoints for user interaction
+    │   ├── service/      # Core business logic & carbon footprint calculation algorithms
+    │   ├── repository/   # Database access layer interfaces (Spring Data JPA)
+    │   └── model/        # Database Entities (User, EmissionLog, ActivityLog)
+    └── resources/
+        └── application.properties  # Centralized database and application configurations
+```
