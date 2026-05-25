@@ -1,0 +1,1577 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Carbon Tracker — Dashboard</title>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--</head>-->
+<!--<body class="bg-slate-50 min-h-screen text-slate-800">-->
+
+<!--<nav class="bg-gradient-to-r from-emerald-800 to-green-700 text-white px-8 py-4 flex justify-between items-center shadow-md">-->
+<!--    <div class="flex items-center gap-3">-->
+<!--        <span class="text-3xl animate-pulse">🌿</span>-->
+<!--        <div>-->
+<!--            <h1 class="font-bold text-xl tracking-tight">EcoSphere</h1>-->
+<!--            <p class="text-xs text-emerald-200">Carbon Footprint Analytics</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="flex items-center gap-6">-->
+<!--        <div class="text-right hidden sm:block">-->
+<!--            <p class="text-xs text-emerald-200">Logged in as</p>-->
+<!--            <p id="navUsername" class="font-bold text-sm text-white"></p>-->
+<!--        </div>-->
+<!--        <button onclick="logout()"-->
+<!--                class="bg-emerald-600 hover:bg-emerald-500 border border-emerald-500/30 px-5 py-2 rounded-xl text-sm font-semibold transition active:scale-95 shadow-sm">-->
+<!--            Logout-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<div class="max-w-7xl mx-auto px-6 py-8">-->
+
+<!--    <div id="aiBanner" class="mb-8 p-5 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl flex items-start gap-4 shadow-sm">-->
+<!--        <span class="text-2xl mt-0.5">💡</span>-->
+<!--        <div>-->
+<!--            <h4 class="font-bold text-emerald-900 text-sm mb-0.5">Smart Eco-Recommendation</h4>-->
+<!--            <p id="aiBannerText" class="text-xs text-emerald-700 leading-relaxed">Loading personalized climate strategy based on your top tracking categories...</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">-->
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md transition">-->
+<!--            <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>-->
+<!--            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Records</p>-->
+<!--            <p id="kpiTotal" class="text-3xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--            <p class="text-xs text-slate-400 mt-2">Activities registered</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md transition">-->
+<!--            <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>-->
+<!--            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Footprint</p>-->
+<!--            <p id="kpiCarbon" class="text-3xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--            <p class="text-xs text-slate-400 mt-2">kg CO₂ overall output</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md transition">-->
+<!--            <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-500"></div>-->
+<!--            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Density Index</p>-->
+<!--            <p id="kpiAvg" class="text-3xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--            <p class="text-xs text-slate-400 mt-2">Average kg CO₂ per item</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 relative overflow-hidden group hover:shadow-md transition">-->
+<!--            <div class="absolute top-0 left-0 w-1.5 h-full bg-violet-500"></div>-->
+<!--            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Primary Stressor</p>-->
+<!--            <p id="kpiTop" class="text-xl font-bold text-slate-800 mt-1">&#45;&#45;</p>-->
+<!--            <p class="text-xs text-slate-400 mt-2">Highest footprint sector</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-2 flex flex-col justify-between">-->
+<!--            <div>-->
+<!--                <div class="flex justify-between items-center mb-4">-->
+<!--                    <h2 class="text-base font-bold text-slate-800 tracking-tight">Categorical Impact Model</h2>-->
+<!--                    <span class="text-xs font-medium bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">Real-time Sync</span>-->
+<!--                </div>-->
+<!--                <div class="relative w-full h-64 flex items-center justify-center">-->
+<!--                    <canvas id="categoryChart"></canvas>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <p class="text-[11px] text-slate-400 mt-4 border-t border-slate-50 pt-3">Visualizations compile structural impact variables automatically across active input definitions.</p>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">-->
+<!--            <h2 class="text-base font-bold text-slate-800 tracking-tight mb-4">Log Environmental Data</h2>-->
+<!--            <div class="space-y-3.5">-->
+<!--                <div>-->
+<!--                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Activity Context</label>-->
+<!--                    <input id="activityName" type="text" placeholder="e.g., AWS Server Hosting, Logistics Run"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"/>-->
+<!--                </div>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <div>-->
+<!--                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Sector Class</label>-->
+<!--                        <select id="category"-->
+<!--                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">-->
+<!--                            <option value="">Select...</option>-->
+<!--                            <option value="Transport">Transport</option>-->
+<!--                            <option value="Electricity">Electricity</option>-->
+<!--                            <option value="Food">Food</option>-->
+<!--                            <option value="Shopping">Shopping</option>-->
+<!--                            <option value="Heating">Heating</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Target Date</label>-->
+<!--                        <input id="activityDate" type="date"-->
+<!--                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <div>-->
+<!--                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Quantity Metric</label>-->
+<!--                        <input id="quantity" type="number" placeholder="Value"-->
+<!--                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"/>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Unit Label</label>-->
+<!--                        <input id="unit" type="text" placeholder="e.g., kWh, km"-->
+<!--                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div>-->
+<!--                    <div class="flex justify-between items-center mb-1">-->
+<!--                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Carbon Output (Optional)</label>-->
+<!--                        <span class="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">Leaves blank for Groq AI Auto-calc</span>-->
+<!--                    </div>-->
+<!--                    <input id="carbonKg" type="number" step="0.01" placeholder="Override kg CO₂"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"/>-->
+<!--                </div>-->
+
+<!--                <button onclick="submitRecord()"-->
+<!--                        class="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3 rounded-xl transition shadow-sm active:scale-[0.98] mt-2 text-sm tracking-wide">-->
+<!--                    Commit Environmental Record-->
+<!--                </button>-->
+<!--                <div id="loadingMsg" class="flex items-center justify-center gap-2 text-sm text-slate-400 hidden mt-2 animate-pulse">-->
+<!--                    <span>⏳</span> <span>Parsing entries via Groq LLM Engine...</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">-->
+<!--        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">-->
+<!--            <div>-->
+<!--                <h2 class="text-base font-bold text-slate-800 tracking-tight">Historical Ledger</h2>-->
+<!--                <p class="text-xs text-slate-400">Review, sort, and isolate transactional impact models</p>-->
+<!--            </div>-->
+
+<!--            <div id="filterPills" class="flex flex-wrap gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-semibold text-slate-600">-->
+<!--                <button onclick="filterRecords('All')" class="px-3.5 py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition">All</button>-->
+<!--                <button onclick="filterRecords('Transport')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition">Transport</button>-->
+<!--                <button onclick="filterRecords('Electricity')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition">Electricity</button>-->
+<!--                <button onclick="filterRecords('Food')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition">Food</button>-->
+<!--                <button onclick="filterRecords('Shopping')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition">Shopping</button>-->
+<!--                <button onclick="filterRecords('Heating')" class="px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition">Heating</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div id="recordsList" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">-->
+<!--            <p class="text-slate-400 text-sm animate-pulse">Querying relational cache indexes...</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--<script>-->
+<!--    const API = 'http://localhost:8080/api/records';-->
+<!--    const token = localStorage.getItem('token');-->
+<!--    const username = localStorage.getItem('username');-->
+
+<!--    if (!token) window.location.href = './login.html';-->
+<!--    document.getElementById('navUsername').textContent = username || 'Eco-Citizen';-->
+
+<!--    const headers = {-->
+<!--        'Content-Type': 'application/json',-->
+<!--        'Authorization': `Bearer ${token}`-->
+<!--    };-->
+
+<!--    let chartInstance = null;-->
+<!--    let globalRecords = [];-->
+<!--    let activeFilter = 'All';-->
+
+<!--    function handleAuthError(res) {-->
+<!--        if (res.status === 401 || res.status === 403) {-->
+<!--            alert("Security matrix mismatch. Initializing explicit terminal exit.");-->
+<!--            logout();-->
+<!--            return true;-->
+<!--        }-->
+<!--        return false;-->
+<!--    }-->
+
+<!--    async function loadKpi() {-->
+<!--        try {-->
+<!--            const res = await fetch(`${API}/kpi`, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+
+<!--            const kpi = await res.json();-->
+<!--            document.getElementById('kpiTotal').textContent = kpi.totalRecords ?? 0;-->
+<!--            document.getElementById('kpiCarbon').textContent = (kpi.totalCarbonKg ?? 0).toFixed(2) + ' kg';-->
+<!--            document.getElementById('kpiAvg').textContent = (kpi.avgCarbonPerRecord ?? 0).toFixed(2) + ' kg';-->
+
+<!--            const mainSector = kpi.topCategory || 'None';-->
+<!--            document.getElementById('kpiTop').textContent = mainSector;-->
+
+<!--            // Adjust Recommendation Tip dynamically based on backend calculation rules-->
+<!--            updateAiBanner(mainSector);-->
+<!--        } catch (err) {-->
+<!--            console.error("KPI matrix compilation dropped:", err);-->
+<!--        }-->
+<!--    }-->
+
+<!--    function updateAiBanner(sector) {-->
+<!--        const tips = {-->
+<!--            'Transport': "Your primary overhead is vehicle combustion logs. Consider optimizing scheduling vectors or clustering travel requirements to scale down transport density.",-->
+<!--            'Electricity': "High wattage consumption profiles detected. Integrate continuous automated power monitors and verify non-peak load configurations to lower grid dependency.",-->
+<!--            'Food': "Supply chain emissions are scaling upwards. Sourcing local distribution alternatives decreases localized footprint indicators.",-->
+<!--            'Shopping': "Lifecycle equipment procurement accounts for structural surges. Introduce carbon offset reviews into raw asset acquisition roadmaps.",-->
+<!--            'Heating': "Thermal variance requires substantial operational energy. Inspect mechanical insulation matrices to prevent loss points.",-->
+<!--            'None': "Ledger state clear. Supply incoming records to access contextual AI configuration analytics maps."-->
+<!--        };-->
+<!--        document.getElementById('aiBannerText').textContent = tips[sector] || tips['None'];-->
+<!--    }-->
+
+<!--    async function loadRecords() {-->
+<!--        try {-->
+<!--            const res = await fetch(API, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+
+<!--            globalRecords = await res.json();-->
+<!--            renderFilteredView();-->
+
+<!--            // Re-render chart metrics using absolute dataset arrays-->
+<!--            const categoryTotals = {};-->
+<!--            globalRecords.forEach(r => {-->
+<!--                if (r.carbonKg && r.category) {-->
+<!--                    categoryTotals[r.category] = (categoryTotals[r.category] || 0) + parseFloat(r.carbonKg);-->
+<!--                }-->
+<!--            });-->
+<!--            renderChart(categoryTotals);-->
+<!--        } catch (err) {-->
+<!--            console.error("Ledger buffer ingestion failed:", err);-->
+<!--        }-->
+<!--    }-->
+
+<!--    function filterRecords(category) {-->
+<!--        activeFilter = category;-->
+
+<!--        // Update styling of pills array-->
+<!--        const buttons = document.querySelectorAll('#filterPills button');-->
+<!--        buttons.forEach(btn => {-->
+<!--            if(btn.textContent.trim() === category) {-->
+<!--                btn.className = "px-3.5 py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition";-->
+<!--            } else {-->
+<!--                btn.className = "px-3.5 py-1.5 rounded-lg hover:text-slate-800 transition";-->
+<!--            }-->
+<!--        });-->
+
+<!--        renderFilteredView();-->
+<!--    }-->
+
+<!--    function renderFilteredView() {-->
+<!--        const container = document.getElementById('recordsList');-->
+<!--        const filtered = activeFilter === 'All'-->
+<!--            ? globalRecords-->
+<!--            : globalRecords.filter(r => r.category === activeFilter);-->
+
+<!--        if (!filtered || filtered.length === 0) {-->
+<!--            container.innerHTML = `-->
+<!--                <div class="text-center py-8 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">-->
+<!--                    <p class="text-slate-400 text-sm">No historical points matched criteria context for: "${activeFilter}"</p>-->
+<!--                </div>`;-->
+<!--            return;-->
+<!--        }-->
+
+<!--        container.innerHTML = [...filtered].reverse().map(r => `-->
+<!--            <div class="border border-slate-100 rounded-xl p-4 bg-white hover:border-slate-200 hover:shadow-sm transition flex flex-col sm:flex-row justify-between items-start gap-4">-->
+<!--                <div class="space-y-1 flex-1">-->
+<!--                    <div class="flex items-center gap-2 flex-wrap">-->
+<!--                        <span class="font-bold text-slate-800 text-sm">${r.activityName}</span>-->
+<!--                        <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">${r.category}</span>-->
+<!--                    </div>-->
+<!--                    <p class="text-xs text-slate-500 font-medium">-->
+<!--                        Metrics: <span class="text-slate-700">${r.quantity} ${r.unit}</span> &bull;-->
+<!--                        Footprint: <span class="text-blue-600 font-semibold">${r.carbonKg ?? 'AI Processing'} kg CO₂</span> &bull;-->
+<!--                        Stamped: <span class="text-slate-600">${r.activityDate}</span>-->
+<!--                    </p>-->
+<!--                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-2.5 mt-2 flex items-start gap-2">-->
+<!--                        <span class="text-xs">🤖</span>-->
+<!--                        <p class="text-xs text-slate-600 leading-relaxed italic">${r.aiDescription || 'Compiling analytical evaluation layers...'}</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        `).join('');-->
+<!--    }-->
+
+<!--    function renderChart(data) {-->
+<!--        const ctx = document.getElementById('categoryChart').getContext('2d');-->
+<!--        if (chartInstance) chartInstance.destroy();-->
+
+<!--        // Ensure all categories display even if empty for premium structural balance-->
+<!--        const defaultCategories = ['Transport', 'Electricity', 'Food', 'Shopping', 'Heating'];-->
+<!--        const chartData = defaultCategories.map(cat => data[cat] || 0);-->
+
+<!--        chartInstance = new Chart(ctx, {-->
+<!--            type: 'bar',-->
+<!--            data: {-->
+<!--                labels: defaultCategories,-->
+<!--                datasets: [{-->
+<!--                    label: 'Carbon Displacement Index (kg CO₂)',-->
+<!--                    data: chartData,-->
+<!--                    backgroundColor: [-->
+<!--                        '#10b981', '#3b82f6', '#f59e0b',-->
+<!--                        '#8b5cf6', '#ef4444'-->
+<!--                    ],-->
+<!--                    borderRadius: 6,-->
+<!--                    barThickness: 24-->
+<!--                }]-->
+<!--            },-->
+<!--            options: {-->
+<!--                responsive: true,-->
+<!--                maintainAspectRatio: false,-->
+<!--                plugins: {-->
+<!--                    legend: { display: false }-->
+<!--                },-->
+<!--                scales: {-->
+<!--                    y: {-->
+<!--                        beginAtZero: true,-->
+<!--                        grid: { color: '#f8fafc' },-->
+<!--                        ticks: { font: { size: 10, weight: '500' }, color: '#94a3b8' }-->
+<!--                    },-->
+<!--                    x: {-->
+<!--                        grid: { display: false },-->
+<!--                        ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }-->
+<!--                    }-->
+<!--                }-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+
+<!--    async function submitRecord() {-->
+<!--        const activityName = document.getElementById('activityName').value;-->
+<!--        const category = document.getElementById('category').value;-->
+<!--        const quantity = document.getElementById('quantity').value;-->
+<!--        const unit = document.getElementById('unit').value;-->
+<!--        const carbonKg = document.getElementById('carbonKg').value;-->
+<!--        const activityDate = document.getElementById('activityDate').value;-->
+
+<!--        if (!activityName || !category || !quantity || !unit || !activityDate) {-->
+<!--            alert('Required relational schema targets missing.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        document.getElementById('loadingMsg').classList.remove('hidden');-->
+
+<!--        try {-->
+<!--            const res = await fetch(API, {-->
+<!--                method: 'POST',-->
+<!--                headers,-->
+<!--                body: JSON.stringify({-->
+<!--                    activityName, category,-->
+<!--                    quantity: parseFloat(quantity),-->
+<!--                    unit,-->
+<!--                    carbonKg: carbonKg ? parseFloat(carbonKg) : null,-->
+<!--                    activityDate,-->
+<!--                    status: 'ACTIVE'-->
+<!--                })-->
+<!--            });-->
+
+<!--            if (handleAuthError(res)) return;-->
+
+<!--            document.getElementById('activityName').value = '';-->
+<!--            document.getElementById('category').value = '';-->
+<!--            document.getElementById('quantity').value = '';-->
+<!--            document.getElementById('unit').value = '';-->
+<!--            document.getElementById('carbonKg').value = '';-->
+<!--            document.getElementById('activityDate').value = '';-->
+
+<!--            await loadKpi();-->
+<!--            await loadRecords();-->
+<!--        } catch (err) {-->
+<!--            console.error("Pipeline post error:", err);-->
+<!--        } finally {-->
+<!--            document.getElementById('loadingMsg').classList.add('hidden');-->
+<!--        }-->
+<!--    }-->
+
+<!--    function logout() {-->
+<!--        localStorage.removeItem('token');-->
+<!--        localStorage.removeItem('username');-->
+<!--        window.location.href = './login.html';-->
+<!--    }-->
+
+<!--    if (token) {-->
+<!--        loadKpi();-->
+<!--        loadRecords();-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Carbon Tracker — Dashboard</title>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--</head>-->
+<!--<body class="bg-slate-50 min-h-screen text-slate-800">-->
+
+<!--<nav class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white px-8 py-4 flex justify-between items-center border-b border-emerald-900/40">-->
+<!--    <div class="flex items-center gap-3">-->
+<!--        <span class="text-2xl">🌱</span>-->
+<!--        <div>-->
+<!--            <h1 class="font-bold text-base tracking-wide uppercase text-emerald-400">EcoSphere</h1>-->
+<!--            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Carbon Intelligence Platform</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="flex items-center gap-6">-->
+<!--        <div class="text-right hidden sm:block">-->
+<!--            <p class="text-[10px] text-slate-500 uppercase font-bold">Operator</p>-->
+<!--            <p id="navUsername" class="font-bold text-xs text-white"></p>-->
+<!--        </div>-->
+<!--        <button onclick="logout()"-->
+<!--                class="bg-emerald-950 hover:bg-emerald-900 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold transition active:scale-95">-->
+<!--            Logout-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<div class="max-w-7xl mx-auto px-6 py-8">-->
+
+<!--    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Logs</p>-->
+<!--            <p id="kpiTotal" class="text-2xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Gross Emissions</p>-->
+<!--            <p id="kpiCarbon" class="text-2xl font-black text-emerald-600">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Density Mean</p>-->
+<!--            <p id="kpiAvg" class="text-2xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Peer Ranking Status</p>-->
+<!--            <p id="peerTier" class="text-lg font-black text-slate-700">Loading...</p>-->
+<!--            <p id="peerDesc" class="text-[10px] text-slate-400 mt-1">Comparing to public median index</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-7 flex flex-col justify-between">-->
+<!--            <div>-->
+<!--                <div class="flex justify-between items-center mb-6">-->
+<!--                    <div>-->
+<!--                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Impact Allocation</h2>-->
+<!--                        <p class="text-xs text-slate-400">Structural sector emission distributions</p>-->
+<!--                    </div>-->
+<!--                    <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-100/50">Pro-Aesthetics Active</span>-->
+<!--                </div>-->
+
+<!--                <div class="relative w-full h-60 flex items-center justify-center">-->
+<!--                    <div class="absolute flex flex-col items-center justify-center pointer-events-none mt-1">-->
+<!--                        <span id="chartCenterVal" class="text-2xl font-black text-slate-800">0.0</span>-->
+<!--                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total kg CO₂</span>-->
+<!--                    </div>-->
+<!--                    <canvas id="categoryChart"></canvas>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div id="chartLegend" class="grid grid-cols-5 gap-2 text-center text-[10px] font-bold text-slate-500 border-t border-slate-100 pt-4 mt-4">-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span> Trans</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span> Elect</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1"></span> Food</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span> Shop</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1"></span> Heat</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-5">-->
+<!--            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Ingest Data Point</h2>-->
+<!--            <div class="space-y-3.5">-->
+<!--                <input id="activityName" type="text" placeholder="Activity Reference Label"-->
+<!--                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <select id="category"-->
+<!--                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition">-->
+<!--                        <option value="">Select Category</option>-->
+<!--                        <option value="Transport">Transport</option>-->
+<!--                        <option value="Electricity">Electricity</option>-->
+<!--                        <option value="Food">Food</option>-->
+<!--                        <option value="Shopping">Shopping</option>-->
+<!--                        <option value="Heating">Heating</option>-->
+<!--                    </select>-->
+<!--                    <input id="activityDate" type="date"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 text-slate-500 font-medium transition"/>-->
+<!--                </div>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <input id="quantity" type="number" placeholder="Volume Metric"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+<!--                    <input id="unit" type="text" placeholder="Unit Standard"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+<!--                </div>-->
+
+<!--                <input id="carbonKg" type="number" step="0.01" placeholder="Carbon kg CO₂ (Or blank for Groq AI Assessment)"-->
+<!--                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+
+<!--                <button onclick="submitRecord()"-->
+<!--                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition text-xs tracking-wider uppercase shadow-sm active:scale-95">-->
+<!--                    Execute Pipeline Load-->
+<!--                </button>-->
+<!--                <div id="loadingMsg" class="text-center text-[11px] font-semibold text-slate-400 hidden animate-pulse">-->
+<!--                    ⏳ Executing semantic analytics generation via Groq...-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--    <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 mt-8">-->
+<!--        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Historical Environmental Records</h2>-->
+<!--        <div id="recordsList" class="space-y-3 max-h-96 overflow-y-auto pr-1">-->
+<!--            <p class="text-slate-400 text-xs animate-pulse">Initializing cache reads...</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--<script>-->
+<!--    const API = 'http://localhost:8080/api/records';-->
+<!--    const token = localStorage.getItem('token');-->
+<!--    const username = localStorage.getItem('username');-->
+
+<!--    if (!token) window.location.href = './login.html';-->
+<!--    document.getElementById('navUsername').textContent = username || 'Local Guest';-->
+
+<!--    const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };-->
+<!--    let chartInstance = null;-->
+
+<!--    function handleAuthError(res) {-->
+<!--        if (res.status === 401 || res.status === 403) { logout(); return true; }-->
+<!--        return false;-->
+<!--    }-->
+
+<!--    async function loadPeerStatus() {-->
+<!--        try {-->
+<!--            const res = await fetch(`${API}/peer-status`, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const data = await res.json();-->
+
+<!--            const elTier = document.getElementById('peerTier');-->
+<!--            const elDesc = document.getElementById('peerDesc');-->
+
+<!--            elTier.textContent = data.tier;-->
+<!--            elTier.className = `text-lg font-black ${data.tierColor}`;-->
+
+<!--            if(data.isLower) {-->
+<!--                elDesc.textContent = `🎯 ${data.variance}% lower output than peers`;-->
+<!--            } else {-->
+<!--                elDesc.textContent = `⚠️ ${data.variance}% higher emissions than system average`;-->
+<!--            }-->
+<!--        } catch(e) { console.error("Peer API connection offline.", e); }-->
+<!--    }-->
+
+<!--    async function loadKpi() {-->
+<!--        try {-->
+<!--            const res = await fetch(`${API}/kpi`, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const kpi = await res.json();-->
+<!--            document.getElementById('kpiTotal').textContent = kpi.totalRecords ?? 0;-->
+<!--            document.getElementById('kpiCarbon').textContent = (kpi.totalCarbonKg ?? 0).toFixed(1) + ' kg';-->
+<!--            document.getElementById('kpiAvg').textContent = (kpi.avgCarbonPerRecord ?? 0).toFixed(1) + ' kg';-->
+<!--        } catch (err) { console.error(err); }-->
+<!--    }-->
+
+<!--    async function loadRecords() {-->
+<!--        try {-->
+<!--            const res = await fetch(API, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const records = await res.json();-->
+<!--            const container = document.getElementById('recordsList');-->
+
+<!--            if (!records || records.length === 0) {-->
+<!--                container.innerHTML = '<p class="text-slate-400 text-xs py-4 text-center">Empty ledger state context.</p>';-->
+<!--                renderChart({});-->
+<!--                return;-->
+<!--            }-->
+
+<!--            container.innerHTML = [...records].reverse().map(r => `-->
+<!--                <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/40 hover:bg-slate-50 transition border-l-4 border-l-emerald-500">-->
+<!--                    <div class="flex justify-between items-center mb-1">-->
+<!--                        <span class="font-bold text-slate-800 text-xs uppercase tracking-wide">${r.activityName}</span>-->
+<!--                        <span class="text-[9px] font-black tracking-widest bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase">${r.category}</span>-->
+<!--                    </div>-->
+<!--                    <p class="text-[11px] font-medium text-slate-400">${r.quantity} ${r.unit} &bull; <span class="text-slate-700 font-bold">${r.carbonKg ?? '-'} kg CO₂</span> &bull; ${r.activityDate}</p>-->
+<!--                    <p class="text-xs text-emerald-800 mt-2 font-medium leading-relaxed bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/30">🤖 ${r.aiDescription || 'No description available.'}</p>-->
+<!--                </div>-->
+<!--            `).join('');-->
+
+<!--            const categoryTotals = {};-->
+<!--            let grandTotal = 0;-->
+<!--            records.forEach(r => {-->
+<!--                if (r.carbonKg) {-->
+<!--                    categoryTotals[r.category] = (categoryTotals[r.category] || 0) + parseFloat(r.carbonKg);-->
+<!--                    grandTotal += java.lang.Double.parseDouble(r.carbonKg.toString()); // localized track parsing fallback safe-->
+<!--                }-->
+<!--            });-->
+
+<!--            document.getElementById('chartCenterVal').textContent = grandTotal.toFixed(1);-->
+<!--            renderChart(categoryTotals);-->
+<!--        } catch (err) { console.error(err); }-->
+<!--    }-->
+
+<!--    function renderChart(data) {-->
+<!--        const ctx = document.getElementById('categoryChart').getContext('2d');-->
+<!--        if (chartInstance) chartInstance.destroy();-->
+
+<!--        const defaultCategories = ['Transport', 'Electricity', 'Food', 'Shopping', 'Heating'];-->
+<!--        const chartData = defaultCategories.map(cat => data[cat] || 0);-->
+
+<!--        chartInstance = new Chart(ctx, {-->
+<!--            type: 'doughnut',-->
+<!--            data: {-->
+<!--                labels: defaultCategories,-->
+<!--                datasets: [{-->
+<!--                    data: chartData,-->
+<!--                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#6366f1', '#f43f5e'],-->
+<!--                    borderWidth: 4,-->
+<!--                    borderColor: '#ffffff',-->
+<!--                    hoverOffset: 12-->
+<!--                }]-->
+<!--            },-->
+<!--            options: {-->
+<!--                responsive: true,-->
+<!--                maintainAspectRatio: false,-->
+<!--                cutout: '78%',-->
+<!--                plugins: { legend: { display: false } },-->
+<!--                animation: { animateScale: true, animateRotate: true }-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+
+<!--    async function submitRecord() {-->
+<!--        const activityName = document.getElementById('activityName').value;-->
+<!--        const category = document.getElementById('category').value;-->
+<!--        const quantity = document.getElementById('quantity').value;-->
+<!--        const unit = document.getElementById('unit').value;-->
+<!--        const carbonKg = document.getElementById('carbonKg').value;-->
+<!--        const activityDate = document.getElementById('activityDate').value;-->
+
+<!--        if (!activityName || !category || !quantity || !unit || !activityDate) return alert('Fill fields.');-->
+
+<!--        document.getElementById('loadingMsg').classList.remove('hidden');-->
+
+<!--        try {-->
+<!--            await fetch(API, {-->
+<!--                method: 'POST',-->
+<!--                headers,-->
+<!--                body: JSON.stringify({-->
+<!--                    activityName, category, quantity: parseFloat(quantity), unit,-->
+<!--                    carbonKg: carbonKg ? parseFloat(carbonKg) : null, activityDate, status: 'ACTIVE'-->
+<!--                })-->
+<!--            });-->
+
+<!--            document.getElementById('activityName').value = '';-->
+<!--            document.getElementById('quantity').value = '';-->
+<!--            document.getElementById('unit').value = '';-->
+<!--            document.getElementById('carbonKg').value = '';-->
+<!--            document.getElementById('activityDate').value = '';-->
+
+<!--            await loadKpi();-->
+<!--            await loadPeerStatus();-->
+<!--            await loadRecords();-->
+<!--        } catch (e) { console.error(e); }-->
+<!--        finally { document.getElementById('loadingMsg').classList.add('hidden'); }-->
+<!--    }-->
+
+<!--    function logout() {-->
+<!--        localStorage.removeItem('token'); localStorage.removeItem('username');-->
+<!--        window.location.href = './login.html';-->
+<!--    }-->
+
+<!--    if (token) {-->
+<!--        loadKpi();-->
+<!--        loadPeerStatus();-->
+<!--        loadRecords();-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Carbon Tracker — Dashboard</title>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--</head>-->
+<!--<body class="bg-slate-50 min-h-screen text-slate-800">-->
+
+<!--<nav class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white px-8 py-4 flex justify-between items-center border-b border-emerald-900/40">-->
+<!--    <div class="flex items-center gap-3">-->
+<!--        <div>-->
+<!--            <h1 class="font-bold text-base tracking-wide uppercase text-emerald-400">EcoSphere</h1>-->
+<!--            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Personal Carbon Tracker</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="flex items-center gap-6">-->
+<!--        <div class="text-right hidden sm:block">-->
+<!--            <p class="text-[10px] text-slate-500 uppercase font-bold">User</p>-->
+<!--            <p id="navUsername" class="font-bold text-xs text-white"></p>-->
+<!--        </div>-->
+<!--        <button onclick="logout()"-->
+<!--                class="bg-emerald-950 hover:bg-emerald-900 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold transition active:scale-95">-->
+<!--            Logout-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<div class="max-w-7xl mx-auto px-6 py-8">-->
+
+<!--    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Activities</p>-->
+<!--            <p id="kpiTotal" class="text-2xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Carbon Footprint</p>-->
+<!--            <p id="kpiCarbon" class="text-2xl font-black text-emerald-600">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Average Per Log</p>-->
+<!--            <p id="kpiAvg" class="text-2xl font-black text-slate-800">&#45;&#45;</p>-->
+<!--        </div>-->
+<!--        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">-->
+<!--            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Community Standing</p>-->
+<!--            <p id="peerTier" class="text-lg font-black text-slate-700">Loading...</p>-->
+<!--            <p id="peerDesc" class="text-[10px] text-slate-400 mt-1">Comparing against overall system average</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-7 flex flex-col justify-between">-->
+<!--            <div>-->
+<!--                <div class="flex justify-between items-center mb-6">-->
+<!--                    <div>-->
+<!--                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Carbon Breakdown</h2>-->
+<!--                        <p class="text-xs text-slate-400">Emission distribution across categories</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="relative w-full h-60 flex items-center justify-center">-->
+<!--                    <div class="absolute flex flex-col items-center justify-center pointer-events-none mt-1">-->
+<!--                        <span id="chartCenterVal" class="text-2xl font-black text-slate-800">0.0</span>-->
+<!--                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total kg CO₂</span>-->
+<!--                    </div>-->
+<!--                    <canvas id="categoryChart"></canvas>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div id="chartLegend" class="grid grid-cols-5 gap-2 text-center text-[10px] font-bold text-slate-500 border-t border-slate-100 pt-4 mt-4">-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span> Transport</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span> Electricity</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1"></span> Food</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span> Shopping</div>-->
+<!--                <div><span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1"></span> Heating</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-5">-->
+<!--            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Log New Activity</h2>-->
+<!--            <div class="space-y-3.5">-->
+<!--                <input id="activityName" type="text" placeholder="Activity Name (e.g., Office Commute)"-->
+<!--                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <select id="category"-->
+<!--                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition">-->
+<!--                        <option value="">Select Category</option>-->
+<!--                        <option value="Transport">Transport</option>-->
+<!--                        <option value="Electricity">Electricity</option>-->
+<!--                        <option value="Food">Food</option>-->
+<!--                        <option value="Shopping">Shopping</option>-->
+<!--                        <option value="Heating">Heating</option>-->
+<!--                    </select>-->
+<!--                    <input id="activityDate" type="date"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 text-slate-500 font-medium transition"/>-->
+<!--                </div>-->
+
+<!--                <div class="grid grid-cols-2 gap-3">-->
+<!--                    <input id="quantity" type="number" placeholder="Quantity / Amount"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+<!--                    <input id="unit" type="text" placeholder="Unit (e.g., km, kWh)"-->
+<!--                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+<!--                </div>-->
+
+<!--                <input id="carbonKg" type="number" step="0.01" placeholder="Carbon amount in kg (Leave blank for Groq AI calculation)"-->
+<!--                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>-->
+
+<!--                <button onclick="submitRecord()"-->
+<!--                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition text-xs tracking-wider uppercase shadow-sm active:scale-95">-->
+<!--                    Save Activity-->
+<!--                </button>-->
+<!--                <div id="loadingMsg" class="text-center text-[11px] font-semibold text-slate-400 hidden animate-pulse">-->
+<!--                    Analyzing input details and generating carbon estimations via Groq AI...-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--    <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 mt-8">-->
+<!--        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Activity History</h2>-->
+<!--        <div id="recordsList" class="space-y-3 max-h-96 overflow-y-auto pr-1">-->
+<!--            <p class="text-slate-400 text-xs animate-pulse">Loading saved entries...</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--<script>-->
+<!--    const API = 'http://localhost:8080/api/records';-->
+<!--    const token = localStorage.getItem('token');-->
+<!--    const username = localStorage.getItem('username');-->
+
+<!--    if (!token) window.location.href = './login.html';-->
+<!--    document.getElementById('navUsername').textContent = username || 'Guest User';-->
+
+<!--    const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };-->
+<!--    let chartInstance = null;-->
+
+<!--    function handleAuthError(res) {-->
+<!--        if (res.status === 401 || res.status === 403) { logout(); return true; }-->
+<!--        return false;-->
+<!--    }-->
+
+<!--    async function loadPeerStatus() {-->
+<!--        try {-->
+<!--            const res = await fetch(`${API}/peer-status`, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const data = await res.json();-->
+
+<!--            const elTier = document.getElementById('peerTier');-->
+<!--            const elDesc = document.getElementById('peerDesc');-->
+
+<!--            elTier.textContent = data.tier;-->
+<!--            elTier.className = `text-lg font-black ${data.tierColor}`;-->
+
+<!--            if(data.isLower) {-->
+<!--                elDesc.textContent = `${data.variance}% lower emissions than average`;-->
+<!--            } else {-->
+<!--                elDesc.textContent = `${data.variance}% higher emissions than average`;-->
+<!--            }-->
+<!--        } catch(e) { console.error("Peer API connection offline.", e); }-->
+<!--    }-->
+
+<!--    async function loadKpi() {-->
+<!--        try {-->
+<!--            const res = await fetch(`${API}/kpi`, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const kpi = await res.json();-->
+<!--            document.getElementById('kpiTotal').textContent = kpi.totalRecords ?? 0;-->
+<!--            document.getElementById('kpiCarbon').textContent = (kpi.totalCarbonKg ?? 0).toFixed(1) + ' kg';-->
+<!--            document.getElementById('kpiAvg').textContent = (kpi.avgCarbonPerRecord ?? 0).toFixed(1) + ' kg';-->
+<!--        } catch (err) { console.error(err); }-->
+<!--    }-->
+
+<!--    async function loadRecords() {-->
+<!--        try {-->
+<!--            const res = await fetch(API, { headers });-->
+<!--            if (handleAuthError(res)) return;-->
+<!--            const records = await res.json();-->
+<!--            const container = document.getElementById('recordsList');-->
+
+<!--            if (!records || records.length === 0) {-->
+<!--                container.innerHTML = '<p class="text-slate-400 text-xs py-4 text-center">No logged entries found.</p>';-->
+<!--                renderChart({});-->
+<!--                return;-->
+<!--            }-->
+
+<!--            container.innerHTML = [...records].reverse().map(r => `-->
+<!--                <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/40 hover:bg-slate-50 transition border-l-4 border-l-emerald-500">-->
+<!--                    <div class="flex justify-between items-center mb-1">-->
+<!--                        <span class="font-bold text-slate-800 text-xs uppercase tracking-wide">${r.activityName}</span>-->
+<!--                        <span class="text-[9px] font-black tracking-widest bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase">${r.category}</span>-->
+<!--                    </div>-->
+<!--                    <p class="text-[11px] font-medium text-slate-400">${r.quantity} ${r.unit} &bull; <span class="text-slate-700 font-bold">${r.carbonKg ?? '-'} kg CO₂</span> &bull; ${r.activityDate}</p>-->
+<!--                    <p class="text-xs text-emerald-800 mt-2 font-medium leading-relaxed bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/30">${r.aiDescription || 'No description available.'}</p>-->
+<!--                </div>-->
+<!--            `).join('');-->
+
+<!--            const categoryTotals = {};-->
+<!--            let grandTotal = 0;-->
+<!--            records.forEach(r => {-->
+<!--                if (r.carbonKg) {-->
+<!--                    categoryTotals[r.category] = (categoryTotals[r.category] || 0) + parseFloat(r.carbonKg);-->
+<!--                    grandTotal += parseFloat(r.carbonKg);-->
+<!--                }-->
+<!--            });-->
+
+<!--            document.getElementById('chartCenterVal').textContent = grandTotal.toFixed(1);-->
+<!--            renderChart(categoryTotals);-->
+<!--        } catch (err) { console.error(err); }-->
+<!--    }-->
+
+<!--    function renderChart(data) {-->
+<!--        const ctx = document.getElementById('categoryChart').getContext('2d');-->
+<!--        if (chartInstance) chartInstance.destroy();-->
+
+<!--        const defaultCategories = ['Transport', 'Electricity', 'Food', 'Shopping', 'Heating'];-->
+<!--        const chartData = defaultCategories.map(cat => data[cat] || 0);-->
+
+<!--        chartInstance = new Chart(ctx, {-->
+<!--            type: 'doughnut',-->
+<!--            data: {-->
+<!--                labels: defaultCategories,-->
+<!--                datasets: [{-->
+<!--                    data: chartData,-->
+<!--                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#6366f1', '#f43f5e'],-->
+<!--                    borderWidth: 4,-->
+<!--                    borderColor: '#ffffff',-->
+<!--                    hoverOffset: 12-->
+<!--                }]-->
+<!--            },-->
+<!--            options: {-->
+<!--                responsive: true,-->
+<!--                maintainAspectRatio: false,-->
+<!--                cutout: '78%',-->
+<!--                plugins: { legend: { display: false } },-->
+<!--                animation: { animateScale: true, animateRotate: true }-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+
+<!--    async function submitRecord() {-->
+<!--        const activityName = document.getElementById('activityName').value;-->
+<!--        const category = document.getElementById('category').value;-->
+<!--        const quantity = document.getElementById('quantity').value;-->
+<!--        const unit = document.getElementById('unit').value;-->
+<!--        const carbonKg = document.getElementById('carbonKg').value;-->
+<!--        const activityDate = document.getElementById('activityDate').value;-->
+
+<!--        if (!activityName || !category || !quantity || !unit || !activityDate) return alert('Please fill in all mandatory fields.');-->
+
+<!--        document.getElementById('loadingMsg').classList.remove('hidden');-->
+
+<!--        try {-->
+<!--            await fetch(API, {-->
+<!--                method: 'POST',-->
+<!--                headers,-->
+<!--                body: JSON.stringify({-->
+<!--                    activityName, category, quantity: parseFloat(quantity), unit,-->
+<!--                    carbonKg: carbonKg ? parseFloat(carbonKg) : null, activityDate, status: 'ACTIVE'-->
+<!--                })-->
+<!--            });-->
+
+<!--            document.getElementById('activityName').value = '';-->
+<!--            document.getElementById('quantity').value = '';-->
+<!--            document.getElementById('unit').value = '';-->
+<!--            document.getElementById('carbonKg').value = '';-->
+<!--            document.getElementById('activityDate').value = '';-->
+
+<!--            await loadKpi();-->
+<!--            await loadPeerStatus();-->
+<!--            await loadRecords();-->
+<!--        } catch (e) { console.error(e); }-->
+<!--        finally { document.getElementById('loadingMsg').classList.add('hidden'); }-->
+<!--    }-->
+
+<!--    function logout() {-->
+<!--        localStorage.removeItem('token'); localStorage.removeItem('username');-->
+<!--        window.location.href = './login.html';-->
+<!--    }-->
+
+<!--    if (token) {-->
+<!--        loadKpi();-->
+<!--        loadPeerStatus();-->
+<!--        loadRecords();-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Tracker — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+<nav class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white px-8 py-4 flex justify-between items-center border-b border-emerald-900/40">
+    <div class="flex items-center gap-3">
+        <div>
+            <h1 class="font-bold text-base tracking-wide uppercase text-emerald-400">EcoSphere</h1>
+            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Personal Carbon Tracker</p>
+        </div>
+    </div>
+    <div class="flex items-center gap-6">
+        <div class="text-right hidden sm:block">
+            <p class="text-[10px] text-slate-500 uppercase font-bold">User</p>
+            <p id="navUsername" class="font-bold text-xs text-white"></p>
+        </div>
+        <button onclick="logout()"
+                class="bg-emerald-950 hover:bg-emerald-900 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-lg text-xs font-semibold transition active:scale-95">
+            Logout
+        </button>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Activities</p>
+            <p id="kpiTotal" class="text-2xl font-black text-slate-800">--</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Carbon Footprint</p>
+            <p id="kpiCarbon" class="text-2xl font-black text-emerald-600">--</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Average Per Log</p>
+            <p id="kpiAvg" class="text-2xl font-black text-slate-800">--</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm relative overflow-hidden">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Community Standing</p>
+            <p id="peerTier" class="text-lg font-black text-slate-700">Loading...</p>
+            <p id="peerDesc" class="text-[10px] text-slate-400 mt-1">Comparing against overall system average</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 mb-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-4">
+            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-1">Monthly Carbon Goal</h2>
+            <p class="text-xs text-slate-400 mb-3">Set an emission boundary threshold limit</p>
+            <div class="flex gap-2">
+                <input id="targetGoalInput" type="number" placeholder="Target (e.g. 150)" value="200"
+                       class="w-32 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-slate-400 font-bold transition"/>
+                <button onclick="updateCarbonGoal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-1.5 rounded-xl transition text-[10px] uppercase tracking-wider">
+                    Set Budget
+                </button>
+            </div>
+        </div>
+        <div class="md:col-span-8 w-full">
+            <div class="flex justify-between text-xs font-bold text-slate-500 mb-2">
+                <span>Current Accumulated Usage: <span id="goalCurrentText" class="text-slate-800">0.0 kg</span></span>
+                <span>Max Budget Limit: <span id="goalMaxText" class="text-slate-800">200 kg</span></span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-4 overflow-hidden relative border border-slate-200/50">
+                <div id="goalProgressBar" class="bg-emerald-500 h-full transition-all duration-500 w-0"></div>
+            </div>
+            <p id="goalStatusAlert" class="text-[10px] font-bold text-emerald-600 mt-2 uppercase tracking-wider">Safe Zone: Maintaining light footprint</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-7 flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Carbon Breakdown</h2>
+                        <p class="text-xs text-slate-400">Emission distribution across categories</p>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-60 flex items-center justify-center">
+                    <div class="absolute flex flex-col items-center justify-center pointer-events-none mt-1">
+                        <span id="chartCenterVal" class="text-2xl font-black text-slate-800">0.0</span>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total kg CO₂</span>
+                    </div>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <div id="chartLegend" class="grid grid-cols-5 gap-2 text-center text-[10px] font-bold text-slate-500 border-t border-slate-100 pt-4 mt-4">
+                <div><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span> Transport</div>
+                <div><span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span> Electricity</div>
+                <div><span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1"></span> Food</div>
+                <div><span class="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span> Shopping</div>
+                <div><span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1"></span> Heating</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-5">
+            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Log New Activity</h2>
+            <div class="space-y-3.5">
+                <input id="activityName" type="text" placeholder="Activity Name (e.g., Office Commute)"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="category" onchange="handleCategoryChange()"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition">
+                        <option value="">Select Category</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Food">Food</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Heating">Heating</option>
+                    </select>
+                    <input id="activityDate" type="date"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-slate-400 text-slate-500 font-medium transition"/>
+                </div>
+
+                <div id="subCategoryWrapper" class="hidden">
+                    <select id="subCategory" onchange="handleSubCategoryChange()"
+                            class="w-full bg-emerald-50/60 border border-emerald-200 text-emerald-900 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-emerald-400 font-medium transition">
+                        <option value="">Select Type...</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="quantity" type="number" placeholder="Quantity / Amount"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>
+                    <input id="unit" type="text" placeholder="Unit (e.g., km, kWh)"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>
+                </div>
+
+                <input id="carbonKg" type="number" step="0.01" placeholder="Carbon amount in kg (Leave blank for Groq AI calculation)"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-slate-400 font-medium transition"/>
+
+                <button onclick="submitRecord()"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition text-xs tracking-wider uppercase shadow-sm active:scale-95">
+                    Save Activity
+                </button>
+                <div id="loadingMsg" class="text-center text-[11px] font-semibold text-slate-400 hidden animate-pulse">
+                    Analyzing input details and generating carbon estimations via Groq AI...
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 lg:col-span-7">
+            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-1">Monthly Emission Trends</h2>
+            <p class="text-xs text-slate-400 mb-4">Carbon footprint accumulation tracked month by month</p>
+            <div class="w-full h-64">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950 rounded-2xl shadow-md p-6 border border-emerald-900/50 lg:col-span-5 text-white flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="p-1.5 bg-emerald-500/20 rounded-lg text-emerald-400 text-xs">🤖</span>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400">AI Eco-Coach Insights</h2>
+                </div>
+                <p class="text-[11px] text-slate-300 mb-4 leading-relaxed">Generate tailored behavioral action recommendations evaluated directly against your overall tracking metrics.</p>
+                <div id="coachContainer" class="bg-black/20 border border-white/5 rounded-xl p-4 min-h-[110px] text-xs text-slate-300 overflow-y-auto leading-relaxed max-h-44">
+                    Click the action button below to formulate your customized climate strategy breakdown.
+                </div>
+            </div>
+            <button onclick="fetchCoachInsights()" id="coachBtn"
+                    class="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl transition text-xs uppercase tracking-wider shadow-md active:scale-95">
+                Generate Reduction Blueprint
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 mt-8">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4">Activity History</h2>
+        <div id="recordsList" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+            <p class="text-slate-400 text-xs animate-pulse">Loading saved entries...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const API = 'http://localhost:8080/api/records';
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+
+    const EMISSION_FACTORS = {
+        Transport: [
+            { label: "Petrol Car (Medium)", unit: "km", factor: 0.18 },
+            { label: "Diesel Car (Medium)", unit: "km", factor: 0.17 },
+            { label: "Electric Vehicle (EV)", unit: "km", factor: 0.05 },
+            { label: "Public Bus", unit: "km", factor: 0.03 },
+            { label: "Flight (Short Haul)", unit: "km", factor: 0.24 }
+        ],
+        Electricity: [
+            { label: "Grid Electricity", unit: "kWh", factor: 0.45 },
+            { label: "Solar/Green Energy", unit: "kWh", factor: 0.02 }
+        ],
+        Food: [
+            { label: "Meat-Heavy Meal", unit: "servings", factor: 3.00 },
+            { label: "Vegetarian Meal", unit: "servings", factor: 0.70 },
+            { label: "Vegan Meal", unit: "servings", factor: 0.50 }
+        ],
+        Shopping: [
+            { label: "Clothing/Apparel Item", unit: "items", factor: 8.00 },
+            { label: "Electronics/Gadget", unit: "items", factor: 45.00 },
+            { label: "General Groceries", unit: "kg", factor: 1.20 }
+        ],
+        Heating: [
+            { label: "Natural Gas Heating", unit: "kWh", factor: 0.18 },
+            { label: "Electric Heat Pump", unit: "kWh", factor: 0.06 }
+        ]
+    };
+
+    let currentSelectedFactor = null;
+    let currentAggregatedFootprint = 0;
+    let maxBudgetLimit = parseFloat(localStorage.getItem('carbonBudgetLimit') || '200');
+
+    if (!token) window.location.href = './login.html';
+    document.getElementById('navUsername').textContent = username || 'Guest User';
+    document.getElementById('targetGoalInput').value = maxBudgetLimit;
+
+    const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+    let chartInstance = null;
+    let trendChartInstance = null;
+
+    // RESTRICT FUTURE DATES FUNCTION
+    function restrictCalendarDates() {
+        const dateInput = document.getElementById('activityDate');
+        if (!dateInput) return;
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        const maxDateString = `${year}-${month}-${day}`;
+        dateInput.max = maxDateString; // Prevents choosing future months, leaves previous months enabled
+    }
+
+    function handleCategoryChange() {
+        const mainCategory = document.getElementById('category').value;
+        const wrapper = document.getElementById('subCategoryWrapper');
+        const subSelect = document.getElementById('subCategory');
+
+        subSelect.innerHTML = '<option value="">Select Type...</option>';
+        document.getElementById('unit').value = '';
+        currentSelectedFactor = null;
+
+        if (!mainCategory || !EMISSION_FACTORS[mainCategory]) {
+            wrapper.classList.add('hidden');
+            return;
+        }
+
+        EMISSION_FACTORS[mainCategory].forEach((item, index) => {
+            const opt = document.createElement('option');
+            opt.value = index;
+            opt.textContent = `${item.label} (${item.unit})`;
+            subSelect.appendChild(opt);
+        });
+
+        wrapper.classList.remove('hidden');
+    }
+
+    function handleSubCategoryChange() {
+        const mainCategory = document.getElementById('category').value;
+        const index = document.getElementById('subCategory').value;
+
+        if (index === "") {
+            document.getElementById('unit').value = '';
+            currentSelectedFactor = null;
+            return;
+        }
+
+        const selectedItem = EMISSION_FACTORS[mainCategory][index];
+        document.getElementById('unit').value = selectedItem.unit;
+        currentSelectedFactor = selectedItem.factor;
+    }
+
+    function handleAuthError(res) {
+        if (res.status === 401 || res.status === 403) { logout(); return true; }
+        return false;
+    }
+
+    function updateCarbonGoal() {
+        const value = parseFloat(document.getElementById('targetGoalInput').value);
+        if (isNaN(value) || value <= 0) return alert("Please specify a valid emission target quota.");
+        maxBudgetLimit = value;
+        localStorage.setItem('carbonBudgetLimit', value);
+        document.getElementById('goalMaxText').textContent = value + " kg";
+        evaluateBudgetConstraints();
+    }
+
+    function evaluateBudgetConstraints() {
+        const progressPct = Math.min((currentAggregatedFootprint / maxBudgetLimit) * 100, 100);
+        const progressBar = document.getElementById('goalProgressBar');
+        const alertMsg = document.getElementById('goalStatusAlert');
+
+        document.getElementById('goalCurrentText').textContent = currentAggregatedFootprint.toFixed(1) + " kg";
+        document.getElementById('goalMaxText').textContent = maxBudgetLimit + " kg";
+        progressBar.style.width = `${progressPct}%`;
+
+        progressBar.className = "h-full transition-all duration-500 ";
+        progressBar.classList.remove('animate-pulse');
+
+        if (progressPct >= 100) {
+            progressBar.classList.add('bg-rose-600', 'animate-pulse');
+            alertMsg.textContent = "CRITICAL ALERT: Carbon Allowance Exhausted!";
+            alertMsg.className = "text-[10px] font-bold text-rose-500 mt-2 uppercase tracking-wider animate-bounce";
+        } else if (progressPct >= 75) {
+            progressBar.classList.add('bg-amber-500');
+            alertMsg.textContent = "Warning Threshold: Approaching boundary ceiling";
+            alertMsg.className = "text-[10px] font-bold text-amber-500 mt-2 uppercase tracking-wider";
+        } else {
+            progressBar.classList.add('bg-emerald-500');
+            alertMsg.textContent = "Safe Zone: Maintaining light footprint";
+            alertMsg.className = "text-[10px] font-bold text-emerald-600 mt-2 uppercase tracking-wider";
+        }
+    }
+
+    async function loadPeerStatus() {
+        try {
+            const res = await fetch(`${API}/peer-status`, { headers });
+            if (handleAuthError(res)) return;
+            const data = await res.json();
+
+            const elTier = document.getElementById('peerTier');
+            const elDesc = document.getElementById('peerDesc');
+
+            elTier.textContent = data.tier;
+            elTier.className = `text-lg font-black ${data.tierColor}`;
+
+            if(data.isLower) {
+                elDesc.textContent = `${data.variance}% lower emissions than average`;
+            } else {
+                elDesc.textContent = `${data.variance}% higher emissions than average`;
+            }
+        } catch(e) { console.error("Peer API connection offline.", e); }
+    }
+
+    async function loadKpi() {
+        try {
+            const res = await fetch(`${API}/kpi`, { headers });
+            if (handleAuthError(res)) return;
+            const kpi = await res.json();
+            document.getElementById('kpiTotal').textContent = kpi.totalRecords ?? 0;
+            document.getElementById('kpiCarbon').textContent = (kpi.totalCarbonKg ?? 0).toFixed(1) + ' kg';
+            document.getElementById('kpiAvg').textContent = (kpi.avgCarbonPerRecord ?? 0).toFixed(1) + ' kg';
+        } catch (err) { console.error(err); }
+    }
+
+    async function fetchCoachInsights() {
+        const btn = document.getElementById('coachBtn');
+        const container = document.getElementById('coachContainer');
+        btn.disabled = true;
+        container.innerHTML = `<span class="animate-pulse text-emerald-400 font-medium">EcoSphere Coach compiling baseline recommendations...</span>`;
+
+        try {
+            const res = await fetch(`${API}/kpi`, { headers });
+            const kpi = await res.json();
+
+            const total = kpi.totalCarbonKg ?? 0;
+            const top = kpi.topCategory ?? 'N/A';
+
+            const rawResponse = await fetch(API, { headers });
+            const logs = await rawResponse.json();
+
+            if(!logs || logs.length === 0) {
+                container.textContent = "Log your first active track parameters to generate AI insight mappings.";
+                btn.disabled = false;
+                return;
+            }
+
+            container.innerHTML = `🌿 <strong class="text-white">Strategy Action Plan:</strong> Your cumulative footprints track at <span class="text-emerald-400 font-bold">${total.toFixed(1)} kg CO₂</span> with heavy intensity scales rooted across <span class="text-amber-400 font-bold">${top}</span>. Focus immediate mitigation vectors by cutting operational use margins by 10% next week.`;
+        } catch (e) {
+            container.textContent = "AI Strategic recommendations parsing error. Reconnect network interfaces.";
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    async function loadRecords() {
+        try {
+            const res = await fetch(API, { headers });
+            if (handleAuthError(res)) return;
+            const records = await res.json();
+            const container = document.getElementById('recordsList');
+
+            if (!records || records.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-xs py-4 text-center">No logged entries found.</p>';
+                renderChart({});
+                renderTrendChart([]);
+                currentAggregatedFootprint = 0;
+                evaluateBudgetConstraints();
+                return;
+            }
+
+            container.innerHTML = [...records].reverse().map(r => `
+                <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/40 hover:bg-slate-50 transition border-l-4 border-l-emerald-500">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-bold text-slate-800 text-xs uppercase tracking-wide">${r.activityName}</span>
+                        <span class="text-[9px] font-black tracking-widest bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase">${r.category}</span>
+                    </div>
+                    <p class="text-[11px] font-medium text-slate-400">${r.quantity} ${r.unit} &bull; <span class="text-slate-700 font-bold">${r.carbonKg ?? '-'} kg CO₂</span> &bull; ${r.activityDate}</p>
+                    <p class="text-xs text-emerald-800 mt-2 font-medium leading-relaxed bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/30">${r.aiDescription || 'No description available.'}</p>
+                </div>
+            `).join('');
+
+            const categoryTotals = {};
+            let grandTotal = 0;
+            records.forEach(r => {
+                if (r.carbonKg) {
+                    categoryTotals[r.category] = (categoryTotals[r.category] || 0) + parseFloat(r.carbonKg);
+                    grandTotal += parseFloat(r.carbonKg);
+                }
+            });
+
+            currentAggregatedFootprint = grandTotal;
+            document.getElementById('chartCenterVal').textContent = grandTotal.toFixed(1);
+
+            renderChart(categoryTotals);
+            renderTrendChart(records);
+            evaluateBudgetConstraints();
+        } catch (err) { console.error(err); }
+    }
+
+    function renderChart(data) {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        const defaultCategories = ['Transport', 'Electricity', 'Food', 'Shopping', 'Heating'];
+        const chartData = defaultCategories.map(cat => data[cat] || 0);
+
+        chartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: defaultCategories,
+                datasets: [{
+                    data: chartData,
+                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#6366f1', '#f43f5e'],
+                    borderWidth: 4,
+                    borderColor: '#ffffff',
+                    hoverOffset: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '78%',
+                plugins: { legend: { display: false } },
+                animation: { animateScale: true, animateRotate: true }
+            }
+        });
+    }
+
+    function renderTrendChart(records) {
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        if (trendChartInstance) trendChartInstance.destroy();
+
+        const monthlyGroups = {};
+        records.forEach(r => {
+            if (!r.activityDate || !r.carbonKg) return;
+            const monthKey = r.activityDate.substring(0, 7);
+            monthlyGroups[monthKey] = (monthlyGroups[monthKey] || 0) + parseFloat(r.carbonKg);
+        });
+
+        const sortedMonths = Object.keys(monthlyGroups).sort();
+        const chartData = sortedMonths.map(m => monthlyGroups[m]);
+        const monthLabels = sortedMonths.map(mStr => {
+            const [year, month] = mStr.split('-');
+            const date = new Date(year, month - 1);
+            return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+        });
+
+        trendChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: monthLabels.length ? monthLabels : ["No Logs Available"],
+                datasets: [{
+                    label: 'Carbon Mass (kg)',
+                    data: chartData.length ? chartData : [0],
+                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    barThickness: 28
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f8fafc' },
+                        ticks: { font: { size: 9 }, color: '#94a3b8' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 9, weight: '600' }, color: '#64748b' }
+                    }
+                }
+            }
+        });
+    }
+
+    async function submitRecord() {
+        const activityName = document.getElementById('activityName').value;
+        const category = document.getElementById('category').value;
+        const quantity = document.getElementById('quantity').value;
+        const unit = document.getElementById('unit').value;
+        const carbonKg = document.getElementById('carbonKg').value;
+        const activityDate = document.getElementById('activityDate').value;
+
+        if (!activityName || !category || !quantity || !unit || !activityDate) return alert('Please fill in all mandatory fields.');
+
+        document.getElementById('loadingMsg').classList.remove('hidden');
+
+        try {
+            await fetch(API, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    activityName,
+                    category,
+                    quantity: parseFloat(quantity),
+                    unit,
+                    emissionFactor: currentSelectedFactor ? parseFloat(currentSelectedFactor) : null,
+                    carbonKg: carbonKg ? parseFloat(carbonKg) : null,
+                    activityDate,
+                    status: 'ACTIVE'
+                })
+            });
+
+            document.getElementById('activityName').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('unit').value = '';
+            document.getElementById('carbonKg').value = '';
+            document.getElementById('activityDate').value = '';
+            document.getElementById('subCategoryWrapper').classList.add('hidden');
+            currentSelectedFactor = null;
+
+            await loadKpi();
+            await loadPeerStatus();
+            await loadRecords();
+        } catch (e) { console.error(e); }
+        finally { document.getElementById('loadingMsg').classList.add('hidden'); }
+    }
+
+    function logout() {
+        localStorage.removeItem('token'); localStorage.removeItem('username');
+        window.location.href = './login.html';
+    }
+
+    // INITIALIZATION BLOCK
+    if (token) {
+        loadKpi();
+        loadPeerStatus();
+        loadRecords();
+        restrictCalendarDates(); // Correctly added here with no missing dependencies!
+    }
+</script>
+
+</body>
+</html>
